@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e3e4e6;
+        }
+
+        body #drum-machine {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        body #drum-machine .drum-kit {
+            border: 6px solid orange;
+            background-color: lightgray;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            column-gap: 10px;
+            padding: 10px;
+            row-gap: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body #drum-machine .drum-kit .drum-pad {
+            height: 100px;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 4px 4px gray;
+            background-color: white;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        body #drum-machine .drum-kit .drum-pad.active {
+            background-color: blue;
+            color: white;
+            box-shadow: none;
+        }
+
+        body #drum-machine #display {
+            min-width: 300px;
+            min-height: 80px;
+            font-size: 54px;
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="drum-machine">
+        <div id="display">
+        </div>
+        <div class="drum-kit">
+            <div class="drum-pad" data-key="81" id="Heater-1">
+                Q
+                <audio class="clip" id="Q" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"
+                    data-key="81"></audio>
+            </div>
+            <div class="drum-pad" data-key="87" id="Heater-2">W
+                <audio id="W" class="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"
+                    data-key="87"></audio>
+            </div>
+            <div class="drum-pad" data-key="69" id="Heater-3">E
+                <audio id="E" class="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"
+                    data-key="69"></audio>
+            </div>
+            <div class="drum-pad" data-key="65" id="Heater-4">A
+                <audio id="A" class="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"
+                    data-key="65"></audio>
+            </div>
+            <div class="drum-pad" data-key="83" id="Heater-6">S
+                <audio id="S" class="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"
+                    data-key="83"></audio>
+            </div>
+            <div class="drum-pad" data-key="68" id="Dsc_Oh">D
+                <audio id="D" class="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"
+                    data-key="68"></audio>
+            </div>
+            <div class="drum-pad" data-key="90" id="Kick_n_Hat">Z <audio class="clip" id="Z"
+                    src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3" data-key="90"></audio></div>
+            <div class="drum-pad" data-key="88" id="RP4_KICK">X <audio class="clip" id="X"
+                    src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3" data-key="88"></audio></div>
+            <div class="drum-pad" data-key="67" id="Cev_H2">C <audio class="clip" id="C"
+                    src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3" data-key="67"></audio></div>
+        </div>
+
+    </div>
+    <script>
+        const toggleKeyClassList = function (key) {
+            key.classList.add('active');
+            setTimeout(() => {
+                key.classList.remove('active');
+            }, 100)
+        }
+        const playBeat = (e) => {
+            const beat = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+
+            toggleKeyClassList(key);
+            beat.currentTime = 0;
+            document.getElementById('display').innerHTML = key.id;
+            beat.play();
+        }
+
+        clickPlay = (e) => {
+            const beat = document.querySelector(`audio[data-key="${e.target.dataset.key}"]`);
+            const key = document.querySelector(`div[data-key="${e.target.dataset.key}"]`);
+            toggleKeyClassList(key);
+            document.getElementById('display').innerHTML = key.id;
+
+            beat.currentTime = 0;
+            beat.play();
+        }
+
+        Array.from(document.getElementsByClassName('drum-pad')).forEach(key => {
+            key.addEventListener('click', clickPlay);
+            window.addEventListener('keydown', playBeat);
+        })
+    </script>
+</body>
+
+</html>
